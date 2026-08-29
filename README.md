@@ -17,6 +17,8 @@ A Claude model served through Anthropic and the same model served through OpenRo
 
 A sigil should be recognizable before it is readable:
 
+![Model Passport design seed](gallery.png)
+
 ```text
 maker mark + model name + variant band + capability pips + route tab
 ```
