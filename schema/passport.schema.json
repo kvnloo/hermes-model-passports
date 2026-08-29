@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kvnloo/hermes-model-passports/schema/passport.schema.json",
+  "title": "Model Passport",
+  "type": "object",
+  "required": ["schema_version", "identity", "capabilities", "route", "visual", "provenance"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "identity": {
+      "type": "object",
+      "required": ["canonical_id", "display_name", "maker", "family"],
+      "properties": {
+        "canonical_id": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "maker": {"type": "string", "minLength": 1},
+        "family": {"type": "string", "minLength": 1},
+        "generation": {"type": ["string", "null"]},
+        "variant": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "propertyNames": {"enum": ["reasoning", "vision", "tools", "structured_output", "audio", "image", "open_weights", "local"]},
+      "additionalProperties": {"type": ["boolean", "null"]}
+    },
+    "route": {
+      "type": "object",
+      "required": ["provider", "model_id"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "direct": {"type": ["boolean", "null"]},
+        "access": {"enum": ["paid", "free", "subscription", "local", "unknown"]}
+      },
+      "additionalProperties": false
+    },
+    "visual": {
+      "type": "object",
+      "required": ["maker_mark", "accent", "fallback_monogram"],
+      "properties": {
+        "maker_mark": {"type": "string"},
+        "accent": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+        "fallback_monogram": {"type": "string", "minLength": 1, "maxLength": 3}
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "confidence"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "source_url": {"type": ["string", "null"], "format": "uri"},
+        "observed_at": {"type": ["string", "null"], "format": "date-time"},
+        "confidence": {"enum": ["verified", "provisional", "unknown"]}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
