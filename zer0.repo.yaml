@@ -1,0 +1,46 @@
+version: 1
+repo: kvnloo/hermes-model-passports
+id: hermes-model-passports
+kind: suite
+summary: Portable model identity and visual metadata language separating maker, canonical model identity, verified capabilities, lifecycle, and serving route.
+
+architecture:
+  subsystems:
+    - id: passport-schema
+      name: Passport schema
+      kind: metadata
+      summary: Defines portable machine-readable model identity, capability, lifecycle, maker, and route fields with provenance-aware unknowns.
+      paths: [schema/passport.schema.json, DESIGN.md]
+    - id: catalog
+      name: Passport catalog
+      kind: metadata
+      summary: Stores representative and resolved passport descriptors independently from rendering.
+      paths: [catalog/]
+      depends_on: [passport-schema]
+    - id: sigil-renderer
+      name: Deterministic sigil renderer
+      kind: presentation
+      summary: Renders compact visual badges from passport descriptors without changing routing or capability authority.
+      paths: [src/render.py, dist/]
+      depends_on: [passport-schema]
+    - id: gallery
+      name: Gallery proof surface
+      kind: presentation
+      summary: Provides a zero-build visual proof and examples for reviewing the identity language.
+      paths: [web/, gallery.png]
+      depends_on: [catalog, sigil-renderer]
+
+  implements_mechanisms: [model-passport-identity]
+  provides_interfaces: []
+  consumes_interfaces: []
+  produces_representations: []
+  consumes_representations: []
+
+  boundaries:
+    owns: [portable model identity metadata, provenance-aware capability descriptors, visual sigils]
+    not_here: [model routing authority, provider authentication, capability authorization, objective tier equivalence]
+
+  evidence:
+    docs: [README.md, DESIGN.md]
+    tests: [tests/]
+    schemas: [schema/passport.schema.json]
